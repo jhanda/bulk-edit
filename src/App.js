@@ -1,23 +1,99 @@
-import logo from './logo.svg';
 import './App.css';
+import React from "react"
+import {getCatalogs, getProducts} from './utils/Requests';
+
+import { HashRouter, Link, Route, Routes, Navigate } from 'react-router-dom'
+
+//Pages
+import Search from './pages/search'
+import SelectOperation from './pages/select-operation'
+import OperationDetails from './pages/operation-details'
+import Confirmation from './pages/confirmation'
 
 function App() {
+
+  const [catalogMap, setCatalogMap] = React.useState(new Map())
+  const [searchTerm, setSearchTerm] = React.useState("")
+  const [products, setProducts] = React.useState([])
+  const [selectedProductIds, setSelectedProductIds] = React.useState([])
+  const [selectedOperation, setSelectedOperation] = React.useState("")
+
+  React.useEffect(() => {
+    getProducts(searchTerm)
+			.then(response => response.json())
+			.then(data => setProducts(data.items));
+  }, [searchTerm])
+
+  React.useEffect(() => {
+    getCatalogs()
+    .then(response => response.json())
+    .then(data => {
+      data.items.forEach(element => {
+        setCatalogMap(prevCatalogMap => prevCatalogMap.set(element.id, element.name))
+      });
+    });
+  }, [catalogMap])
+
+  function updateSearchTerm(newTerm){
+     setSearchTerm(newTerm)
+  }
+
+  function selectProduct(productId){
+    console.log(productId)
+    //props.selectedProductIds.some(x => x == (product.productId))
+    selectedProductIds.includes(productId)? 
+    setSelectedProductIds(selectedProductIds.filter(item => item !== productId))
+    :
+    (setSelectedProductIds(prevSelectedProductIds => [... selectedProductIds, productId]))
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App">      
+      <HashRouter>
+        <nav>
+          <h1>Bulk Edit Products</h1>
+          <Link to="/">Select Products</Link> |
+          <Link to="/select-operation" className={selectedProductIds.length > 0 ? '' : 'disabled-link'}>Select Operation</Link> |
+          <Link to="/operation-details" className={selectedOperation ? '' : 'disabled-link'}>Operation Details</Link> |
+          <Link to="/confirmation">Confirmation</Link>
+        </nav>
+        <Routes>
+          <Route 
+            path="/" 
+            element={
+              <Search
+                searchTerm = {searchTerm}
+                products = {products}
+                selectedProductIds = {selectedProductIds}
+                catalogMap = {catalogMap}
+                updateSearchTerm = {updateSearchTerm}
+                selectProduct = {selectProduct}
+                setSelectedProductIds = {setSelectedProductIds}
+              />
+            } />
+          <Route  path="/select-operation" element={
+            <SelectOperation
+              selectedProductIds = {selectedProductIds}
+              selectedOperation = {selectedOperation}
+              setSelectedOperation = {setSelectedOperation}
+            />
+          } />
+          <Route  path="/operation-details" element={
+            <OperationDetails 
+              selectedProductIds = {selectedProductIds}
+              selectedOperation = {selectedOperation}
+            />
+          } />
+          <Route  path="/confirmation" element={
+            <Confirmation 
+              selectedProductIds = {selectedProductIds}
+            />
+          } />
+          
+      
+        </Routes>
+      </HashRouter>
+
     </div>
   );
 }
