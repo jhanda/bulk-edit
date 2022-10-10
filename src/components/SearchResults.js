@@ -11,10 +11,7 @@ export default function SearchResults(props) {
 	function handleToggle(event){
 		const {name, value, type, checked} = event.target
 		props.selectProduct(name)
-		//console.log("Handling toggle for " + name + " value is " + checked); 
 	}
-
-	console.log(props.selectedProductIds)
 
 	const rowMarkup = props.products.map(product => {
         return (
@@ -35,8 +32,6 @@ export default function SearchResults(props) {
 				<td>{getCategories(product)}</td>
 			</tr> )    
         })
-
-
         
     return (
         <div className="search-results">

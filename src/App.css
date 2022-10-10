@@ -1,5 +1,4 @@
 .App {
-  text-align: center;
 }
 
 .App-logo {
@@ -37,6 +36,9 @@
   }
 }
 
+.empty-results {
+  text-align: center;
+}
 
 
 .form-inline .form-control{
@@ -78,4 +80,8 @@ td {
 
 .disabled-link {
   pointer-events: none;
+}
+
+.custom-control{
+  padding-left: 0rem;
 }

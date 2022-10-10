@@ -54,7 +54,7 @@ const Search = (props) => {
     }
 
     return (
-        <div>
+        <div className="container">
             <h1>Step 1 of 4: Select Products</h1>
             <SearchBar 
                 searchTerm = {props.searchTerm}

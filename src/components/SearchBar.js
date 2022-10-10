@@ -2,8 +2,6 @@
 
 export default function SearchBar(props) {
 
-    console.log(props)
-
     const [formData, setFormData] = React.useState({searchTerm: props.searchTerm})
     
     function handleChange(event) {

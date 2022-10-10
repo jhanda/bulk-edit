@@ -1,6 +1,6 @@
 import './App.css';
 import React from "react"
-import {getCatalogs, getProducts} from './utils/Requests';
+import {getCatalogs, getProducts, getTags} from './utils/Requests';
 
 import { HashRouter, Link, Route, Routes, Navigate } from 'react-router-dom'
 
@@ -9,10 +9,12 @@ import Search from './pages/search'
 import SelectOperation from './pages/select-operation'
 import OperationDetails from './pages/operation-details'
 import Confirmation from './pages/confirmation'
+import Summary from './pages/summary';
 
 function App() {
-
+  const siteId = 20123
   const [catalogMap, setCatalogMap] = React.useState(new Map())
+  const [tags, setTags] = React.useState([])  
   const [searchTerm, setSearchTerm] = React.useState("")
   const [products, setProducts] = React.useState([])
   const [selectedProductIds, setSelectedProductIds] = React.useState([])
@@ -34,12 +36,21 @@ function App() {
     });
   }, [catalogMap])
 
-  function updateSearchTerm(newTerm){
-     setSearchTerm(newTerm)
-  }
+  React.useEffect(() => {
+    getTags(siteId)
+    .then(response => response.json())
+    .then(data => {
+      data.items.forEach(element => {
+        setTags(prevTags => [...prevTags, {label: element.name, value: element.id}])
+      });
+    });
+  }, [tags])
 
+  function updateSearchTerm(newTerm){
+    setSearchTerm(newTerm)
+  }
+  
   function selectProduct(productId){
-    console.log(productId)
     //props.selectedProductIds.some(x => x == (product.productId))
     selectedProductIds.includes(productId)? 
     setSelectedProductIds(selectedProductIds.filter(item => item !== productId))
@@ -87,6 +98,13 @@ function App() {
           <Route  path="/confirmation" element={
             <Confirmation 
               selectedProductIds = {selectedProductIds}
+              tags = {tags}
+            />
+          } />
+          <Route  path="/summary" element={
+            <Summary 
+              selectedProductIds = {selectedProductIds}
+              tags = {tags}
             />
           } />
           

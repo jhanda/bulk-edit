@@ -55,3 +55,16 @@ export const patchObject = object => {
 		method: 'PATCH',
 	});
 };
+
+export const getTags = (siteId) => {
+	return fetch(`http://localhost:8080/o/headless-admin-taxonomy/v1.0/sites/${siteId}/keywords/`, {
+		headers: {
+			Authorization: 'Basic ' + btoa('jeffrey.handa@liferay.com:asdf'),
+			'Content-Type': 'application/json',
+		},
+		method: 'GET',
+	});
+};
+
+
+
