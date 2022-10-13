@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const ELEMENT_ID = 'lfr-react-bulk-edit';
+const ELEMENT_ID = 'lfr-bulk-edit';
 
 class WebComponent extends HTMLElement {
   connectedCallback() {

@@ -1,15 +1,23 @@
-![React version](https://img.shields.io/github/package-json/dependency-version/lgdd/lfr-react-remote-app/react)
 
-# Liferay React Remote App
+# Liferay Commerce Bulk Edit Remote App
 
-This is a template intended for tests & demos. The webpack configuration included is not optimized for production environments.
+This is a proof of concept application that leverages Liferay Commerce headless APIs and Liferay DXP's Remote App capabilities to demonstrate a simple Product Bulk Edit Application.  
 
-## Using this template
+This app is based on template provided [lgdd](https://github.com/lgdd) and is intended for tests & demos. The webpack configuration included is not optimized for production environments.
 
-By default, the custom element name is `lfr-react-remote-app`. You can change it in [src/index.js](src/index.js#L7):
+## Using this application
+
+### Allow relevant URL Patterns in the _Default CORS Configuration_
+1. Open the Global Menu (Global Menu), click the Control Panel tab, and go to System Settings → Security Tools.
+2. Go to the Portal Cross-Origin Resource Sharing (CORS) tab and click Default Portal CORS Configuration.
+3. Add a URL Pattern with the /o/headless-admin-taxonomy/v1.0/* value and another URL Pattern with the /o/headless-commerce-admin-catalog/v1.0/* value and then click Save. This enables CORS for the Tags and Catalog APIs.  
+
+
+
+By default, the custom element name is `lfr-bulk-edit`. You can change it in [src/index.js](src/index.js#L7):
 
 ```js
-const ELEMENT_ID = 'lfr-react-remote-app';
+const ELEMENT_ID = 'lfr-bulk-edit';
 ```
 
 This template is using a custom webpack configuration to build your application in a single file (`bundle.js`) making easier to create a _Remote App_ in Liferay DXP/Portal.
